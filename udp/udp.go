@@ -28,7 +28,7 @@ func (ec *ErrorCounter) Increment() bool {
 func forwardUDPPacket(sourceConn *net.UDPConn, dstConn *net.UDPConn, errorCounters map[string]*ErrorCounter) {
 	for {
 		buffer := make([]byte, bufferSize)
-		n, addr, err := sourceConn.ReadFromUDP(buffer)
+		_, addr, err := sourceConn.ReadFromUDP(buffer)
 		if err != nil {
 			if err.Error() != "EOF" && !PeerError(err) {
 				errStr := err.Error()
@@ -45,10 +45,10 @@ func forwardUDPPacket(sourceConn *net.UDPConn, dstConn *net.UDPConn, errorCounte
 			}
 			return
 		}
-		if n == 0 {
+		if len(buffer) == 0 {
 			break
 		}
-		_, err = dstConn.WriteToUDP(buffer[:n], addr)
+		_, err = dstConn.WriteToUDP(buffer, addr)
 		if err != nil {
 			log.Println("Error occurred while writing UDP packet:", err)
 			return
