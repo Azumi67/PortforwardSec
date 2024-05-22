@@ -131,7 +131,7 @@ func PortForwardUDP(localHost string, localPort string, remoteHost string, remot
 
 	for {
 		buffer := make([]byte, bufferSize)
-		_, _, err := sourceConn.ReadFromUDP(buffer)
+		_, addr, err := udpServerConn.ReadFromUDP(buffer)
 		if err != nil {
 			log.Println("Error occurred while reading UDP connection:", err)
 			continue
@@ -145,7 +145,7 @@ func PortForwardUDP(localHost string, localPort string, remoteHost string, remot
 		}
 
 		wg.Add(1)
-		goroutinePool <- struct{}{}
+	goroutinePool <- struct{}{}
 		go func() {
 			defer func() {
 				<-goroutinePool
