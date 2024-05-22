@@ -30,12 +30,7 @@ func forwardTCPPacket(sourceSocket net.Conn, dstSocket net.Conn, errorCounters m
 		buffer := make([]byte, bufferSize)
 		n, err := sourceSocket.Read(buffer)
 		if err != nil {
-			if err.Error() != "EOF" {
-				opErr, ok := err.(*net.OpError)
-				if ok && (opErr.Err.Error() == "read: connection reset by peer" || opErr.Err.Error() == "use of closed network connection") {
-					return
-				}
-
+			if err.Error() != "EOF" && !isConnectionResetByPeerError(err) {
 				errStr := err.Error()
 				if errCounter, ok := errorCounters[errStr]; ok {
 					if !errCounter.Increment() {
@@ -59,6 +54,17 @@ func forwardTCPPacket(sourceSocket net.Conn, dstSocket net.Conn, errorCounters m
 			return
 		}
 	}
+}
+
+func isConnectionResetByPeerError(err error) bool {
+	opErr, ok := err.(*net.OpError)
+	if ok {
+		errStr := opErr.Err.Error()
+		if errStr == "read: connection reset by peer" || errStr == "use of closed network connection" {
+			return true
+		}
+	}
+	return false
 }
 
 func handleTCPIran(iranSocket net.Conn, remoteHost string, remotePort string, errorCounters map[string]*ErrorCounter) {
