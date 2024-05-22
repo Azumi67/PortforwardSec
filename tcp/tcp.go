@@ -15,16 +15,19 @@ const (
 type ErrorCounter struct {
 	counter  int
 	maxCount int
+	mu       sync.Mutex
 }
 
 func (ec *ErrorCounter) Increment() bool {
+	ec.mu.Lock()
+	defer ec.mu.Unlock()
 	ec.counter++
 	return ec.counter <= ec.maxCount
 }
 
 func forwardTCPPacket(sourceSocket net.Conn, dstSocket net.Conn, errorCounters map[string]*ErrorCounter) {
-	buffer := make([]byte, bufferSize)
 	for {
+		buffer := make([]byte, bufferSize)
 		n, err := sourceSocket.Read(buffer)
 		if err != nil {
 			if err.Error() != "EOF" {
@@ -32,12 +35,15 @@ func forwardTCPPacket(sourceSocket net.Conn, dstSocket net.Conn, errorCounters m
 					return
 				}
 
-				if errCounter, ok := errorCounters[err.Error()]; ok {
+				errStr := err.Error()
+				if errCounter, ok := errorCounters[errStr]; ok {
 					if !errCounter.Increment() {
 						continue
 					}
 				} else {
-					errorCounters[err.Error()] = &ErrorCounter{1, maxErrorLogEntries}
+					ec := &ErrorCounter{counter: 1, maxCount: maxErrorLogEntries}
+					ec.Increment() 
+					errorCounters[errStr] = ec
 				}
 				log.Println("Error occurred while reading TCP packet:", err)
 			}
@@ -68,17 +74,21 @@ func handleTCPIran(iranSocket net.Conn, remoteHost string, remotePort string, er
 	wg.Add(2)
 
 	go func() {
-		defer wg.Done()
+		defer func() {
+			iranSocket.Close()
+			remoteSocket.Close()
+			wg.Done()
+		}()
 		forwardTCPPacket(iranSocket, remoteSocket, errorCounters)
-		iranSocket.Close()
-		remoteSocket.Close()
 	}()
 
 	go func() {
-		defer wg.Done()
+		defer func() {
+			iranSocket.Close()
+			remoteSocket.Close()
+			wg.Done()
+		}()
 		forwardTCPPacket(remoteSocket, iranSocket, errorCounters)
-		iranSocket.Close()
-		remoteSocket.Close()
 	}()
 
 	wg.Wait()
@@ -96,6 +106,7 @@ func PortForwardTCP(localHost string, localPort string, remoteHost string, remot
 
 	log.Printf("[*] Azumi is Listening TCP on %s:%s\n", localHost, localPort)
 
+	var wg sync.WaitGroup
 	goroutinePool := make(chan struct{}, maxGoroutines)
 	errorCounters := make(map[string]*ErrorCounter)
 	for {
@@ -107,10 +118,15 @@ func PortForwardTCP(localHost string, localPort string, remoteHost string, remot
 		iranAddress := iranSocket.RemoteAddr().(*net.TCPAddr)
 		log.Printf("[*] Azumi has Accepted TCP connection from %s:%d\n", iranAddress.IP.String(), iranAddress.Port)
 
+		wg.Add(1)
 		goroutinePool <- struct{}{}
 		go func() {
-			defer func() { <-goroutinePool }()
+			defer func() {
+				<-goroutinePool
+				wg.Done()
+			}()
 			handleTCPIran(iranSocket, remoteHost, remotePort, errorCounters)
 		}()
 	}
+	wg.Wait()
 }
