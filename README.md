@@ -15,6 +15,8 @@ Simple portforward IPV4 | IPV6 - TCP | UDP [needs working] . there will be more 
 
 - برای استفاده از گو پکیج گو را اول نصب کنید.(میتونید از اسکریپت پروژه های گو من برای نصب استفاده نمایید)
 
+first install go package
+go get github.com/Azumi67/PortforwardSEC/tcp
 Go Usage : go run azumiworker.go ip-iran port-iran ip-kharej port-kharej tcp
 
 example IPV6 : go run azumiworker.go :: 5050 2002::db8:1 5050 tcp
