@@ -3,7 +3,9 @@ package main
 import (
 	"fmt"
 	"os"
+
 	"github.com/Azumi67/PortforwardSEC/tcp"
+	"github.com/Azumi67/PortforwardSEC/udp"
 )
 
 func main() {
@@ -21,6 +23,8 @@ func main() {
 	switch protocol {
 	case "tcp":
 		tcp.PortForwardTCP(localHost, localPort, remoteHost, remotePort)
+	case "udp":
+		udp.PortForwardUDP(localHost, localPort, remoteHost, remotePort)
 	default:
 		fmt.Println("Invalid protocol. Supported protocols are tcp and udp. More methods coming!")
 	}
