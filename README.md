@@ -18,7 +18,9 @@ Simple portforward IPV4 | IPV6 - TCP | UDP [needs working] . there will be more 
 - run : sudo apt-get install git-all
 - download: git clone https://github.com/Azumi67/PortforwardSec
 - Go to dir : cd PortforwardSec
-- and : go get github.com/Azumi67/PortforwardSEC/tcp
+- go mod tidy
+- go get github.com/Azumi67/PortforwardSEC/tcp
+- go get github.com/Azumi67/PortforwardSEC/udp
 - Now run With Go : go run azumi.go ip-iran port-iran ip-kharej port-kharej tcp
 =======
 
