@@ -131,7 +131,7 @@ func PortForwardUDP(localHost string, localPort string, remoteHost string, remot
 
 	for {
 		buffer := make([]byte, bufferSize)
-		n, addr, err := udpServerConn.ReadFromUDP(buffer)
+		_, addr, err := udpServerConn.ReadFromUDP(buffer)
 		if err != nil {
 			log.Println("Error occurred while reading UDP connection:", err)
 			continue
