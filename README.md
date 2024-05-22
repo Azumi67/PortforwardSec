@@ -24,6 +24,7 @@ Simple portforward IPV4 | IPV6 - TCP | UDP [needs working] . there will be more 
 
 
 example IPV4 : go run azumi.go 1.1.1.1 5050 1.1.1.2 5050 tcp
+
 example IPV6 : go run azumi.go :: 5050 2002::db8:1 5050 tcp
 
 **یا با دستور زیر انجام دهید**
