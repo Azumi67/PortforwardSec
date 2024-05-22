@@ -13,8 +13,7 @@
 
 Simple portforward IPV4 | IPV6 - TCP | UDP [needs working] . there will be more updates. i will use this port forward in cojunction with IPsec encrypion methods. this project will be updated in time. this will be combined with systemd service for multiple ports.
 
-- برای استفاده از گو پکیج گو را اول نصب کنید.(میتونید از اسکریپت پروژه های گو من برای نصب استفاده نمایید)
-
+ **برای استفاده از گو پکیج گو را اول نصب کنید.(میتونید از اسکریپت پروژه های گو من برای نصب استفاده نمایید)**
 - first install go package
 - go get github.com/Azumi67/PortforwardSEC/tcp
 - Go Usage : go run azumi.go ip-iran port-iran ip-kharej port-kharej tcp
