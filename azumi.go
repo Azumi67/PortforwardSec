@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/Azumi67/PortforwardSEC/tcp"
-	"github.com/Azumi67/PortforwardSEC/udp"
+	"github.com/Azumi67/PortforwardSec/tcp"
+	"github.com/Azumi67/PortforwardSec/udp"
 )
 
 func main() {
