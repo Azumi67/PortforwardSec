@@ -30,7 +30,7 @@ func forwardTCPPacket(sourceSocket net.Conn, dstSocket net.Conn, errorCounters m
 		buffer := make([]byte, bufferSize)
 		n, err := sourceSocket.Read(buffer)
 		if err != nil {
-			if err.Error() != "EOF" && !isConnectionResetByPeerError(err) {
+			if err.Error() != "EOF" && !PeerError(err) {
 				errStr := err.Error()
 				if errCounter, ok := errorCounters[errStr]; ok {
 					if !errCounter.Increment() {
@@ -56,7 +56,7 @@ func forwardTCPPacket(sourceSocket net.Conn, dstSocket net.Conn, errorCounters m
 	}
 }
 
-func isConnectionResetByPeerError(err error) bool {
+func PeerError(err error) bool {
 	opErr, ok := err.(*net.OpError)
 	if ok {
 		errStr := opErr.Err.Error()
@@ -68,37 +68,40 @@ func isConnectionResetByPeerError(err error) bool {
 }
 
 func handleTCPIran(iranSocket net.Conn, remoteHost string, remotePort string, errorCounters map[string]*ErrorCounter) {
-	remoteAddr := net.JoinHostPort(remoteHost, remotePort)
+    remoteAddr := net.JoinHostPort(remoteHost, remotePort)
 
-	remoteSocket, err := net.Dial("tcp", remoteAddr)
-	if err != nil {
-		log.Println("Error occurred while connecting with TCP Proto:", err)
-		iranSocket.Close()
-		return
-	}
+    remoteSocket, err := net.Dial("tcp", remoteAddr)
+    if err != nil {
+        log.Println("Error occurred while connecting with TCP Proto:", err)
+        iranSocket.Close()
+        return
+    }
 
-	var wg sync.WaitGroup
-	wg.Add(2)
+    var wg sync.WaitGroup
+    wg.Add(2)
 
-	go func() {
-		defer func() {
-			iranSocket.Close()
-			remoteSocket.Close()
-			wg.Done()
-		}()
-		forwardTCPPacket(iranSocket, remoteSocket, errorCounters)
-	}()
+    go func() {
+        defer func() {
+            iranSocket.Close()
+            remoteSocket.Close()
+            wg.Done()
+        }()
+        forwardTCPPacket(iranSocket, remoteSocket, errorCounters)
+        log.Println(" Finished Forwarding TCP packet from Iran to kharej.")
+    }()
 
-	go func() {
-		defer func() {
-			iranSocket.Close()
-			remoteSocket.Close()
-			wg.Done()
-		}()
-		forwardTCPPacket(remoteSocket, iranSocket, errorCounters)
-	}()
+    go func() {
+        defer func() {
+            iranSocket.Close()
+            remoteSocket.Close()
+            wg.Done()
+        }()
+        forwardTCPPacket(remoteSocket, iranSocket, errorCounters)
+        log.Println("Finished Forwarding TCP packet from kharej to Iran.")
+    }()
 
-	wg.Wait()
+    wg.Wait()
+    log.Println("TCP proto connection closed.")
 }
 
 func PortForwardTCP(localHost string, localPort string, remoteHost string, remotePort string) {
