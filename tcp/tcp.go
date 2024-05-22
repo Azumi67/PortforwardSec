@@ -1,5 +1,3 @@
-package tcp
-
 import (
 	"log"
 	"net"
@@ -31,7 +29,8 @@ func forwardTCPPacket(sourceSocket net.Conn, dstSocket net.Conn, errorCounters m
 		n, err := sourceSocket.Read(buffer)
 		if err != nil {
 			if err.Error() != "EOF" {
-				if err.(*net.OpError).Err.Error() == "read: connection reset by user" || err.(*net.OpError).Err.Error() == "use of closed network connection" {
+				opErr, ok := err.(*net.OpError)
+				if ok && (opErr.Err.Error() == "read: connection reset by peer" || opErr.Err.Error() == "use of closed network connection") {
 					return
 				}
 
@@ -42,7 +41,7 @@ func forwardTCPPacket(sourceSocket net.Conn, dstSocket net.Conn, errorCounters m
 					}
 				} else {
 					ec := &ErrorCounter{counter: 1, maxCount: maxErrorLogEntries}
-					ec.Increment() 
+					ec.Increment()
 					errorCounters[errStr] = ec
 				}
 				log.Println("Error occurred while reading TCP packet:", err)
