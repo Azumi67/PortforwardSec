@@ -22,4 +22,6 @@ Simple portforward IPV4 | IPV6 - TCP | UDP [needs working] . there will be more 
 
 example IPV6 : go run azumi.go :: 5050 2002::db8:1 5050 tcp
 
-#you can also use go run azumiworker.go ip-iran port-iran ip-kharej port-kharej tcp
+**یا با دستور زیر انجام دهید**
+
+- go run azumiworker.go ip-iran port-iran ip-kharej port-kharej tcp
