@@ -25,10 +25,10 @@ func (ec *ErrorCounter) Increment() bool {
 	return ec.counter <= ec.maxCount
 }
 
-func forwardUDPPacket(sourceConn *net.UDPConn, dstConn *net.UDPConn, errorCounters map[string]*ErrorCounter) {
+func forwardUDPPacket(sourceConn *net.UDPConn, dstAddr *net.UDPAddr, errorCounters map[string]*ErrorCounter) {
 	for {
 		buffer := make([]byte, bufferSize)
-		_, addr, err := sourceConn.ReadFromUDP(buffer)
+		n, err := sourceConn.Read(buffer)
 		if err != nil {
 			if err.Error() != "EOF" && !PeerError(err) {
 				errStr := err.Error()
@@ -45,10 +45,10 @@ func forwardUDPPacket(sourceConn *net.UDPConn, dstConn *net.UDPConn, errorCounte
 			}
 			return
 		}
-		if len(buffer) == 0 {
+		if n == 0 {
 			break
 		}
-		_, err = dstConn.WriteToUDP(buffer, addr)
+		_, err = sourceConn.WriteToUDP(buffer[:n], dstAddr)
 		if err != nil {
 			log.Println("Error occurred while writing UDP packet:", err)
 			return
@@ -91,7 +91,7 @@ func handleUDPIran(iranConn *net.UDPConn, remoteHost string, remotePort string, 
 			remoteConn.Close()
 			wg.Done()
 		}()
-		forwardUDPPacket(iranConn, remoteConn, errorCounters)
+		forwardUDPPacket(iranConn, remoteAddr, errorCounters)
 		log.Println("Finished forwarding UDP packet from Iran to remote host.")
 	}()
 
@@ -101,7 +101,7 @@ func handleUDPIran(iranConn *net.UDPConn, remoteHost string, remotePort string, 
 			remoteConn.Close()
 			wg.Done()
 		}()
-		forwardUDPPacket(remoteConn, iranConn, errorCounters)
+		forwardUDPPacket(remoteConn, iranConn.LocalAddr().(*net.UDPAddr), errorCounters)
 		log.Println("Finished forwarding UDP packet from remote host to Iran.")
 	}()
 
@@ -131,7 +131,7 @@ func PortForwardUDP(localHost string, localPort string, remoteHost string, remot
 
 	for {
 		buffer := make([]byte, bufferSize)
-		_, addr, err := udpServerConn.ReadFromUDP(buffer)
+		n, addr, err := udpServerConn.ReadFromUDP(buffer)
 		if err != nil {
 			log.Println("Error occurred while reading UDP connection:", err)
 			continue
@@ -140,20 +140,24 @@ func PortForwardUDP(localHost string, localPort string, remoteHost string, remot
 
 		iranConn, err := net.DialUDP("udp", nil, &net.UDPAddr{IP: net.IPv4(0, 0, 0, 0), Port: 0})
 		if err != nil {
-			log.Println("Error occurred while connecting with UDPIran:", err)
+			log.Println("Error occurred while connecting with UDP localhost:", err)
 			continue
 		}
 
+		goroutinePool <- struct{}{}
 		wg.Add(1)
-	goroutinePool <- struct{}{}
+
 		go func() {
 			defer func() {
+				iranConn.Close()
 				<-goroutinePool
 				wg.Done()
 			}()
 			handleUDPIran(iranConn, remoteHost, remotePort, errorCounters)
+			log.Printf("[*] Azumi has closed UDP connection with %s:%d\n", addr.IP.String(), addr.Port)
 		}()
 	}
 
 	wg.Wait()
+	log.Println("[*] Azumi has stopped listening for UDP connections.")
 }
