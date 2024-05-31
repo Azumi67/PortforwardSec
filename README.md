@@ -17,7 +17,7 @@ Hello Azumi Desu !!
 - از هدر استفاده نکنید چون شاید مشکل دار شوید. در هر صورت برای گیم به هدر نیازی ندارم. بعدا به این پروژه xray core را در صورت امکان اضافه میکنم .
 - این پورت فوروارد با لوکال و ipsec استفاده خواهد شد(برای امنیت بیشتر) و‌فعلا این پروژه در حالت on hold خواهد بود تا نخست پنج سرور ایران و 10 سرور خارج را کامل کنم و سپس رادار‌ برای اسکریپت 6to4.( کم کم اپدیت میشود)
 - این پورت فوروارد بعدا با تانل داخلی هم ترکیب خواهد شد
-- بعدا tcp no delay هم اضافه میکنم
+- بعدا tcp no delay هم به tcp اضافه میکنم و شاید گزینه های دیکر که پورت فوروارد بهبود بیابد. در‌ حاضر از بافرسایز 65535 و همچنین goroutines 100 برای performance استفاده میکند که بعدا به صورت کامند‌ لاین اضافش میکنم.
 - بعدا این پروژه اپدیت خواهد شد و برای ترکیب با پروژه های دیگر،‌ feature های جدید در صورت نیاز اضافه خواهد شد.
 - اگر‌ از این پروژه استفاده کردید و مشکلی دیدید میتوانید در قسمت issues یا ایمیل به اطلاع من برسانید
 - مرسی از engboy که در تست به من کمک بسیاری کردند(به عنوان Contributor نامشون اورده شده است)
@@ -37,7 +37,7 @@ Hello Azumi Desu !!
 - go run azumi4.go --install or go run azumi6.go --install 
 - Now run With Go [TCP] : go run azumi.go ip-iran port-iran ip-kharej port-kharej tcp
 - Now run With Go [UDP4] : go run azumi4.go --iranPort portiran --remoteIP ipkharej --remotePort portkharej --bufferSize 65535
-- Now run With Go [UDP6] : go run azumi4.go --iranPort portiran --remoteIP ipkharej --remotePort portkharej --bufferSize 65535
+- Now run With Go [UDP6] : go run azumi6.go --iranPort portiran --remoteIP ipkharej --remotePort portkharej --bufferSize 65535
 
 =======
 
