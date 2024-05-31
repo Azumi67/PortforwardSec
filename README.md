@@ -18,14 +18,17 @@ Simple portforward IPV4 | IPV6 - TCP | UDP [needs working] . there will be more 
 - run : sudo apt-get install git-all
 - download: git clone https://github.com/Azumi67/PortforwardSec
 - Go to dir : cd PortforwardSec
+- go clean -modcache
 - go mod tidy
 - go get github.com/Azumi67/PortforwardSEC/tcp
-- go get github.com/Azumi67/PortforwardSEC/udp
+- go get github.com/Azumi67/PortforwardSEC/udp4
+- go get github.com/Azumi67/PortforwardSEC/udp6
+- go get github.com/klauspost/reedsolomon
 - Now run With Go [TCP] : go run azumi.go ip-iran port-iran ip-kharej port-kharej tcp
 - Now run With Go [UDP4] : go run azumi4.go --iranPort portiran --remoteIP ipkharej --remotePort portkharej
 - Now run With Go [UDP6] : go run azumi4.go --iranPort portiran --remoteIP ipkharej --remotePort portkharej
 =======
-
+**Note** : example for upgrade : go get -u github.com/Azumi67/PortforwardSEC/udp4
 TCP Example :
 example IPV4 : go run azumi.go 1.1.1.1 5050 1.1.1.2 5050 tcp
 
