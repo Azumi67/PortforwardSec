@@ -5,7 +5,6 @@ import (
 	"os"
 
 	"github.com/Azumi67/PortforwardSec/tcp"
-	"github.com/Azumi67/PortforwardSec/udp"
 )
 
 func main() {
