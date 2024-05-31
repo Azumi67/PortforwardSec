@@ -1,5 +1,14 @@
 
 
+<p align="center">
+  <img src="https://github.com/Azumi67/PortforwardSec/assets/119934376/8993e9dc-6b78-4543-850c-6c5e6dcc9843" alt="OIP">
+</p>
+<div align="center">
+
+Hello Azumi Desu !!
+
+</div>
+
 - این پروژه برای یادگیری بیشتر و ipsec اضافه شده , در حال بهبودی میباشد ( اسکریپت هم برایش میسازم). اگر دوست داشتید استفاده کنید
 - هم چنین udp با استفاده از سوکت و buffer size و codereedsolomon اضافه شد.
 - در udp از reedsolomon برای کاهش پکت لاس استفاده شده که به عبارتی از two data shards and two parity shards استفاده شده است
@@ -9,7 +18,8 @@
 - بعدا tcp no delay هم اضافه میکنم
 - بعدا این پروژه اپدیت خواهد شد و برای ترکیب با پروژه های دیگر،‌ feature های جدید در صورت نیاز اضافه خواهد شد.
 - اگر‌ از این پروژه استفاده کردید و مشکلی دیدید میتوانید در قسمت issues یا ایمیل به اطلاع من برسانید
-- مرسی از engboy که در تست به من کمک بسیاری کردند.
+- مرسی از engboy که در تست به من کمک بسیاری کردند
+.
 
 Simple portforward IPV4 | IPV6 - TCP | UDP [needs working] . there will be more updates. i will use this port forward in cojunction with IPsec encrypion methods. this project will be updated in time. this will be combined with systemd service for multiple ports.
 
