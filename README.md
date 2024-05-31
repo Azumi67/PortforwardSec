@@ -34,7 +34,7 @@ Hello Azumi Desu !!
 - go get github.com/Azumi67/PortforwardSEC/udp4
 - go get github.com/Azumi67/PortforwardSEC/udp6
 - go get github.com/klauspost/reedsolomon
-- go run azumi4.go --install or go run azumi6.go --install 
+- go run azumi4.go --install or go run azumi6.go --install [For UDP only]
 - Now run With Go [TCP] : go run azumi.go ip-iran port-iran ip-kharej port-kharej tcp
 - Now run With Go [UDP4] : go run azumi4.go --iranPort portiran --remoteIP ipkharej --remotePort portkharej --bufferSize 65535
 - Now run With Go [UDP6] : go run azumi6.go --iranPort portiran --remoteIP ipkharej --remotePort portkharej --bufferSize 65535
