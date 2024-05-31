@@ -4,8 +4,8 @@ import (
 	"bufio"
 	"fmt"
 	"log"
-  "sync"
-  "net'
+        "sync"
+        "net"
 	"os"
 	"os/exec"
 	"strconv"
