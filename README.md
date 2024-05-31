@@ -35,8 +35,8 @@ Simple portforward IPV4 | IPV6 - TCP | UDP [needs working] . there will be more 
 - go get github.com/Azumi67/PortforwardSEC/udp6
 - go get github.com/klauspost/reedsolomon
 - Now run With Go [TCP] : go run azumi.go ip-iran port-iran ip-kharej port-kharej tcp
-- Now run With Go [UDP4] : go run azumi4.go --iranPort portiran --remoteIP ipkharej --remotePort portkharej
-- Now run With Go [UDP6] : go run azumi4.go --iranPort portiran --remoteIP ipkharej --remotePort portkharej
+- Now run With Go [UDP4] : go run azumi4.go --iranPort portiran --remoteIP ipkharej --remotePort portkharej --bufferSize 65535
+- Now run With Go [UDP6] : go run azumi4.go --iranPort portiran --remoteIP ipkharej --remotePort portkharej --bufferSize 65535
 
 =======
 
@@ -52,6 +52,6 @@ example IPV6 : go run azumi.go :: 5050 2002::db8:1 5050 tcp
 
 UDP Example 
 
-example IPV4 : go run azumi4.go --iranPort 5051 --remoteIP 200.100.20.100 --remotePort 5051
+example IPV4 : go run azumi4.go --iranPort 5051 --remoteIP 200.100.20.100 --remotePort 5051 --bufferSize 65535
 
-example IPV6 : go run azumi6.go --iranPort 5051 --remoteIP 2002::db8:1 --remotePort 5051
+example IPV6 : go run azumi6.go --iranPort 5051 --remoteIP 2002::db8:1 --remotePort 5051 --bufferSize 65535
