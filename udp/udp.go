@@ -35,12 +35,12 @@ func installSct() error {
 	return nil
 }
 
-func PortFwdUDP(iranPort string, remoteIP string, remotePort string, command string, buffer int, enc reedsolomon.Encoder) {
-	log.Printf("Azumichan is starting port forwarding (UDP4): %s -> %s:%s\n", iranPort, remoteIP, remotePort)
+func PortFwdUDP(iranPort string, remoteKharej string, remotePort string, command string, buffer int, enc reedsolomon.Encoder) {
+	log.Printf("Azumichan is starting port forwarding (UDP4): %s -> %s:%s\n", iranPort, remoteKharej, remotePort)
 
 	cmd := exec.Command("socat",
 		"UDP4-LISTEN:"+iranPort+",reuseaddr,fork",
-		"UDP4:"+remoteIP+":"+remotePort)
+		"UDP4:"+remoteKharej+":"+remotePort)
 
 	if command != "" {
 		cmd = exec.Command("sh", "-c", command)
