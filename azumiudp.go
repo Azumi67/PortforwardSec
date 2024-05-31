@@ -10,7 +10,8 @@ import (
 	"strconv"
 
 	"github.com/klauspost/reedsolomon"
-  "github.com/Azumi67/PortforwardSec/udp"
+        "github.com/Azumi67/PortforwardSec/udp4"
+	"github.com/Azumi67/PortforwardSec/udp6"
 	flag "github.com/spf13/pflag"
 )
 
