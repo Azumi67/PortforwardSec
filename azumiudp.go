@@ -9,8 +9,8 @@ import (
 	"os/exec"
 	"strconv"
 
-	"github.com/klauspost/reedsolomon"
-  "github.com/Azumi67/PortforwardSec/udp2"
+  "github.com/klauspost/reedsolomon"
+  "github.com/Azumi67/PortforwardSec/udp"
 	flag "github.com/spf13/pflag"
 )
 
