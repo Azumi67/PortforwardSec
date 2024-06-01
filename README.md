@@ -31,9 +31,9 @@ Hello Azumi Desu !!
 - Go to dir : cd PortforwardSec
 - go clean -modcache
 - go mod tidy
-- go get github.com/Azumi67/PortforwardSEC/tcp
-- go get github.com/Azumi67/PortforwardSEC/udp4
-- go get github.com/Azumi67/PortforwardSEC/udp6
+- go get github.com/Azumi67/PortforwardSec/tcp
+- go get github.com/Azumi67/PortforwardSec/udp4
+- go get github.com/Azumi67/PortforwardSec/udp6
 - go get github.com/klauspost/reedsolomon
 - go run azumi4.go --install or go run azumi6.go --install [For UDP only]
 - Now run With Go [TCP] : go run azumi.go ip-iran port-iran ip-kharej port-kharej tcp
@@ -42,7 +42,7 @@ Hello Azumi Desu !!
 
 =======
 
-**Note** : example for upgrade : go get -u github.com/Azumi67/PortforwardSEC/udp4
+**Note** : example for upgrade : go get -u github.com/Azumi67/PortforwardSec/udp4
 
 =======
 
