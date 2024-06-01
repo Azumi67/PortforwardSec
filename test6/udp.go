@@ -9,7 +9,7 @@ import (
 	"runtime"
 	"strconv"
 	"sync"
-
+        "fmt"
 	"github.com/klauspost/reedsolomon"
 )
 
@@ -37,8 +37,8 @@ func installSct() error {
 	return nil
 }
 
-func PortFwdUDP(iranPort string, remoteIP string, remotePort string, command string, buffer int, enc reedsolomon.Encoder) {
-	log.Printf("Azumichan is starting port forwarding: %s -> %s:%s\n", iranPort, remoteIP, remotePort)
+func PortFwdUDP(localPt string, remoteIP string, remotePort string, command string, buffer int, enc reedsolomon.Encoder) {
+	log.Printf("Azumichan is starting port forwarding: %s -> %s:%s\n", localPt, remoteIP, remotePort)
 
 	maxGoro(remoteIP, remotePort)
 
