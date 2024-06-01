@@ -1,15 +1,97 @@
 package main
 
 import (
-        "flag"
-        "log"
-        "os"
-        "fmt"
-        "os/exec"
-        "github.com/Azumi67/PortforwardSec/udp6"
-        "github.com/klauspost/reedsolomon"
-
+	"bufio"
+	"flag"
+	"fmt"
+	"log"
+	"os"
+	"os/exec"
+	"time"
+	"github.com/Azumi67/PortforwardSec/udp6"
+	"github.com/klauspost/reedsolomon"
+	"runtime"
+	"sync"
+	"net"
 )
+
+func screenclean() {
+	cmd := exec.Command("clear")
+	cmd.Stdout = os.Stdout
+	cmd.Run()
+}
+
+func anime() {
+	screenclean()
+
+	boxWidth := 10
+	fullbar := "█"
+	emptybox := "-"
+
+	for i := 0; i <= boxWidth; i++ {
+		bar := ""
+		for j := 0; j < i; j++ {
+			bar += fullbar
+		}
+		for j := i; j < boxWidth; j++ {
+			bar += emptybox
+		}
+
+		screenclean()
+		fmt.Printf("[%s] %d%%\n", bar, i*10)
+		time.Sleep(500 * time.Millisecond)
+	}
+}
+
+func maxGoro(remoteIP string, remotePort string) {
+	max := runtime.GOMAXPROCS(0) 
+	wg := sync.WaitGroup{}
+	poison := make(chan struct{}, max)
+	poolConn := make(chan net.Conn, max) 
+
+	for i := 0; i < max; i++ {
+		wg.Add(1)
+		poison <- struct{}{}
+		go func() {
+			defer func() {
+				wg.Done()
+				<-poison
+			}()
+
+			conn := toPool(poolConn, remoteIP, remotePort)
+
+			returnPool(conn, poolConn)
+		}()
+	}
+
+	wg.Wait()
+	close(poison)
+	close(poolConn)
+}
+
+func toPool(pool chan net.Conn, remoteIP string, remotePort string) net.Conn {
+	select {
+	case conn := <-pool:
+		return conn
+	default:
+		addr := fmt.Sprintf("[%s]:%s", remoteIP, remotePort)
+		conn, err := net.Dial("udp", addr)
+		if err != nil {
+			log.Println("Couldn't establish a connection:", err)
+			return nil
+		}
+		return conn
+	}
+}
+
+func returnPool(conn net.Conn, pool chan net.Conn) {
+	select {
+	case pool <- conn:
+	default:
+		conn.Close()
+	}
+}
+
 func installSct() error {
 	_, err := exec.LookPath("socat")
 	if err == nil {
@@ -17,19 +99,33 @@ func installSct() error {
 		return nil
 	}
 
-	log.Println("Installing udp..")
+	log.Println("Installing udp requirements...")
+	go anime()
 
-	cmd := exec.Command("sudo", "apt-get", "install", "socat", "-y")
+	cmd := exec.Command("sudo", "DEBIAN_FRONTEND=noninteractive", "apt-get", "install", "-y", "socat")
 
-	cmd.Stdout = os.Stdout
-	cmd.Stderr = os.Stderr
-
-	err = cmd.Run()
+	stdout, err := cmd.StdoutPipe()
 	if err != nil {
-		return fmt.Errorf("couldn't install socatudp: %v", err)
+		return fmt.Errorf("couldn't create installations for stdout: %v", err)
+	}
+	err = cmd.Start()
+	if err != nil {
+		return fmt.Errorf("couldn't start da command: %v", err)
 	}
 
-	log.Println("It installed successfully")
+	scanner := bufio.NewScanner(stdout)
+	for scanner.Scan() {
+		line := scanner.Text()
+		fmt.Println(line)
+
+	}
+
+	err = cmd.Wait()
+	if err != nil {
+		return fmt.Errorf("couldn't install udp requirements: %v", err)
+	}
+
+	log.Println("socatudp installed successfully")
 
 	return nil
 }
@@ -51,17 +147,18 @@ func main() {
 		if err != nil {
 			log.Fatal(err)
 		}
-	}
+	} else {
+		if iranPort == "" || remoteIP == "" || remotePort == "" {
+			log.Fatal("Plz provide correct inputs for iranPort, remoteIP, and remotePort")
+		}
 
-	if iranPort == "" || remoteIP == "" || remotePort == "" {
-		log.Fatal("Plz provide correct inputs for iranPort, remoteKharej, and remotePort")
-	}
+		enc, err := reedsolomon.New(2, 2)
+		if err != nil {
+			log.Println("Error creating ReedSolomon encoding:", err)
+			return
+		}
 
-	enc, err := reedsolomon.New(2, 2)
-	if err != nil {
-		log.Println("Error creating ReedSolomon encoder:", err)
-		return
+		maxGoro(remoteIP, remotePort)
+		udp6.PortFwdUDP(iranPort, remoteIP, remotePort, command, bufferSize, enc)
 	}
-
-	udp6.PortFwdUDP(iranPort, remoteIP, remotePort, command, bufferSize, enc)
 }
