@@ -8,8 +8,11 @@ import (
 	"os"
 	"os/exec"
 	"time"
-        "github.com/Azumi67/PortforwardSec/udp4"
+	"github.com/Azumi67/PortforwardSec/udp4"
 	"github.com/klauspost/reedsolomon"
+	"runtime"
+	"sync"
+	"net"
 )
 
 func screenclean() {
@@ -37,6 +40,54 @@ func anime() {
 		screenclean()
 		fmt.Printf("[%s] %d%%\n", bar, i*10)
 		time.Sleep(500 * time.Millisecond)
+	}
+}
+
+func maxGoro(remoteIP string, remotePort string) {
+	max := runtime.GOMAXPROCS(0) 
+	wg := sync.WaitGroup{}
+	poison := make(chan struct{}, max)
+	poolConn := make(chan net.Conn, max) 
+
+	for i := 0; i < max; i++ {
+		wg.Add(1)
+		poison <- struct{}{}
+		go func() {
+			defer func() {
+				wg.Done()
+				<-poison
+			}()
+
+			conn := toPool(poolConn, remoteIP, remotePort)
+
+			returnPool(conn, poolConn)
+		}()
+	}
+
+	wg.Wait()
+	close(poison)
+	close(poolConn)
+}
+
+func toPool(pool chan net.Conn, remoteIP string, remotePort string) net.Conn {
+	select {
+	case conn := <-pool:
+		return conn
+	default:
+		conn, err := net.Dial("udp", remoteIP+":"+remotePort)
+		if err != nil {
+			log.Println("Couldn't establish a connection:", err)
+			return nil
+		}
+		return conn
+	}
+}
+
+func returnPool(conn net.Conn, pool chan net.Conn) {
+	select {
+	case pool <- conn:
+	default:
+		conn.Close()
 	}
 }
 
@@ -107,6 +158,6 @@ func main() {
 		}
 
 		maxGoro(remoteIP, remotePort)
-		PortFwdUDP(iranPort, remoteIP, remotePort, command, bufferSize, enc)
+		test.PortFwdUDP(iranPort, remoteIP, remotePort, command, bufferSize, enc)
 	}
 }
