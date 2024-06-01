@@ -39,8 +39,8 @@ Hello Azumi Desu !!
 - go get github.com/klauspost/reedsolomon
 - go run azumi4.go --install or go run azumi6.go --install [For UDP only]
 - Now run With Go [TCP] : go run azumi.go ip-iran port-iran ip-kharej port-kharej tcp
-- Now run With Go [UDP4] : go run azumi4.go --iranPort portiran --remoteIP ipkharej --remotePort portkharej --bufferSize 65535
-- Now run With Go [UDP6] : go run azumi6.go --iranPort portiran --remoteIP ipkharej --remotePort portkharej --bufferSize 65535
+- Now run With Go [UDP4] : go run azumi4.go --iranPort portiran --remoteIP ipkharej --remotePort portkharej --bufferSize 65507
+- Now run With Go [UDP6] : go run azumi6.go --iranPort portiran --remoteIP ipkharej --remotePort portkharej --bufferSize 65507
 
 =======
 
@@ -56,7 +56,12 @@ example IPV6 : go run azumi.go :: 5050 2002::db8:1 5050 tcp
 
 UDP Example 
 
-example IPV4 : go run azumi4.go --iranPort 5051 --remoteIP 200.100.20.100 --remotePort 5051 --bufferSize 65535
+example IPV4 : go run azumi4.go --iranPort 5051 --remoteIP 200.100.20.100 --remotePort 5051 --bufferSize 65507
 
-example IPV6 : go run azumi6.go --iranPort 5051 --remoteIP 2002::db8:1 --remotePort 5051 --bufferSize 65535
+example IPV6 : go run azumi6.go --iranPort 5051 --remoteIP 2002::db8:1 --remotePort 5051 --bufferSize 65507
 - برای مولتی پورت باید سرویس جداگانه برای هر پورت بسازید ( اگر نیاز به آموزش داشتید داخل issue بگید)
+
+- **چند نکته**
+- اگر به هر دلیلی udp أر سرور شما لیمیت بود، از geneve و ایپی 4 یا ایپی 6 استفاده نمایید.
+- اگر باز هم لیمیت سرور ایران شما زیاد بود ، به صورت kcp و tcp برای گیم استفاده نمایید.
+- برای tcp نیازی به نصب هیچ پروگرامی ندارید و فقط udp از پایه سوکت استفاده میکند.
