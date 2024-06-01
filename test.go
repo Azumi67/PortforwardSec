@@ -8,7 +8,7 @@ import (
 	"os"
 	"os/exec"
 	"time"
-	"github.com/Azumi67/PortforwardSec/udp4"
+	"github.com/Azumi67/PortforwardSec/test6"
 	"github.com/klauspost/reedsolomon"
 	"runtime"
 	"sync"
