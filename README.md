@@ -22,7 +22,7 @@ Hello Azumi Desu !!
 - داری tcp no delay ( با true فعال میشود و با false غیرفعال میشود)
 - داری codereedsolomon برای udp برای کاهش پکت لاس
 - امکان ترکیب با ipsec و لوکال ایپی تانل برای امنیت بیشتر
-- امکان ترکیب با تانل های داخلی
+- امکان ترکیب با تانل های داخلی 64
 - امکان ترکیب با icmp و dns
 - بعدا اسکریپت ساخته میشود
 -----------------------
@@ -32,7 +32,8 @@ Hello Azumi Desu !!
     <summary><strong>توضیحات</strong></summary>
   
 ------------------------------------ 
-
+ <div align="right">
+   
 - این برنامه برای یادگیری بیشتر و ipsec نوشته شده است و این برنامه در طی زمان، بهبود میابد. اگر دوست داشتید استفاده کنید
 - در حال حاضر من از این برنامه برای گیم آنلاین هم استفاده میکنم.
 - اسکریپت هم برایش میسازم.
@@ -47,8 +48,6 @@ Hello Azumi Desu !!
 - به این برنامه tcp no delay هم برای پینگ بهتر اضافه شد. بافر سایز هم توسط کامند لاین، قابل تغییر میباشد و همچنین از تعداد goroutines 100 برای performance استفاده میکند
 - بعدا این پروژه اپدیت خواهد شد و برای ترکیب با پروژه های دیگر،‌ feature های جدید در صورت نیاز اضافه خواهد شد.
 - اگر‌ از این پروژه استفاده کردید و مشکلی دیدید میتوانید در قسمت issues یا ایمیل به اطلاع من برسانید
-
-
   </details>
 </div>
 
@@ -60,11 +59,11 @@ Hello Azumi Desu !!
     <summary><strong>چندین نکته</strong></summary>
     
   ------------------------------------ 
+   <div align="right">
 
 - اگر به هر دلیلی udp در سرور شما لیمیت بود، از geneve و ایپی 4 یا ایپی 6 استفاده نمایید.
 - اگر باز هم لیمیت سرور ایران شما زیاد بود ، به صورت kcp و tcp برای گیم استفاده نمایید.
 - برای tcp نیازی به نصب هیچ پروگرامی ندارید و فقط udp از پایه سوکت استفاده میکند.
-
   </details>
 </div>
 
@@ -81,7 +80,8 @@ Hello Azumi Desu !!
 
  **برای استفاده از گو، پکیج گو را اول نصب کنید.(میتونید از اسکریپت پروژه های گو من برای نصب استفاده نمایید)**
 
-
+ <div align="left">
+   
   ```
   apt update -y
   apt install wget -y
@@ -89,20 +89,27 @@ Hello Azumi Desu !!
   wget https://github.com/Azumi67/PortforwardSec/releases/download/v1.0.1/azumi.zip
   unzip azumi.zip -d /root/portforward
   cd portforward
+  chmod +x azuminodelay
+  chmod +x azumi4
+  chmod +x azumi6
   for tcp ipv4 : ./azuminodelay iranip 5051 kharejip 5051 tcp true 65535
   for tcp ipv6 : ./azuminodelay :: 5051 kharejipv6 5051 tcp true 65535
   for udp ipv4 : ./azumi4 --iranPort 5051 --remoteIP kharejipv4 --remotePort 5051 --bufferSize 65507
   for udp ipv6 : /azumi6 --iranPort 5051 --remoteIP kharejipv6 --remotePort 5051 --bufferSize 65507
   
   ```
+
+ <div align="right">
   - برای مولتی باید چندین سرویس با همین دستورات بسازید
 
-    </details>
+  </details>
 </div>
  <div align="right">
   <details>
     <summary><strong><img src="https://github.com/Azumi67/Rathole_reverseTunnel/assets/119934376/fcbbdc62-2de5-48aa-bbdd-e323e96a62b5" alt="Image"> </strong>برای سیستم عامل ubuntu 20 , debian 10/11</summary>
 
+ <div align="left">
+   
 ```
 install go package
 sudo apt-get install git-all
@@ -149,6 +156,7 @@ example IPV4 : go run azumi4.go --iranPort 5051 --remoteIP 200.100.20.100 --remo
 
 example IPV6 : go run azumi6.go --iranPort 5051 --remoteIP 2002::db8:1 --remotePort 5051 --bufferSize 65507
 ```
+ <div align="right">
 - برای مولتی پورت باید سرویس جداگانه برای هر پورت بسازید ( اگر نیاز به آموزش داشتید داخل issue بگید)
 
   </details>
