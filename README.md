@@ -34,11 +34,13 @@ Hello Azumi Desu !!
 - go clean -modcache
 - go mod tidy
 - go get github.com/Azumi67/PortforwardSec/tcp
+- go get github.com/Azumi67/PortforwardSec/nodelay
 - go get github.com/Azumi67/PortforwardSec/udp4
 - go get github.com/Azumi67/PortforwardSec/udp6
 - go get github.com/klauspost/reedsolomon
 - go run azumi4.go --install or go run azumi6.go --install [For UDP only]
 - Now run With Go [TCP] : go run azumi.go ip-iran port-iran ip-kharej port-kharej tcp
+- Now run With Go [TCP & No delay] : go run azuminodelay.go ip-iran port-iran ip-kharej port-kharej tcp true/false buffersize
 - Now run With Go [UDP4] : go run azumi4.go --iranPort portiran --remoteIP ipkharej --remotePort portkharej --bufferSize 65507
 - Now run With Go [UDP6] : go run azumi6.go --iranPort portiran --remoteIP ipkharej --remotePort portkharej --bufferSize 65507
 
@@ -53,6 +55,14 @@ TCP Example :
 example IPV4 : go run azumi.go 1.1.1.1 5050 1.1.1.2 5050 tcp
 
 example IPV6 : go run azumi.go :: 5050 2002::db8:1 5050 tcp
+
+=======
+
+TCP No delay Example :
+
+example IPV4 : go run azuminodelay.go 100.100.100.100 5050 200.200.200.200 5050 tcp true 65535
+
+example IPV6 : go run azuminodelay.go :: 5050 2002::db8:1 5050 tcp true 65535
 
 UDP Example 
 
