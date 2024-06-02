@@ -9,6 +9,29 @@ Hello Azumi Desu !!
 
 </div>
 
+![R (2)](https://github.com/Azumi67/PrivateIP-Tunnel/assets/119934376/a064577c-9302-4f43-b3bf-3d4f84245a6f)
+نام پروژه : پورت فوروارد TCP & UDP با IPSEC
+---------------------------------------------------------------
+
+![check](https://github.com/Azumi67/PrivateIP-Tunnel/assets/119934376/13de8d36-dcfe-498b-9d99-440049c0cf14)
+**امکانات**
+- پورت فورواد TCP و UDP
+- امکان فوروارد چندین پورت همزمان
+- امکان پورت فوروارد بین چندین سرور خارج و ایران بر روی چندین پورت
+- دارای connection pool و goroutines برای performance بهتر
+- داری tcp no delay ( با true فعال میشود و با false غیرفعال میشود)
+- داری codereedsolomon برای udp برای کاهش پکت لاس
+- امکان ترکیب با ipsec و لوکال ایپی تانل برای امنیت بیشتر
+- امکان ترکیب با تانل های داخلی
+- امکان ترکیب با icmp و dns
+-----------------------
+
+ <div align="right">
+  <details>
+    <summary><strong>توضیحات</strong></summary>
+  
+------------------------------------ 
+
 - این برنامه برای یادگیری بیشتر و ipsec نوشته شده است و این برنامه در طی زمان، بهبود میابد. اگر دوست داشتید استفاده کنید
 - در حال حاضر من از این برنامه برای گیم آنلاین هم استفاده میکنم.
 - اسکریپت هم برایش میسازم.
@@ -18,18 +41,45 @@ Hello Azumi Desu !!
 - در udp از reedsolomon برای کاهش پکت لاس استفاده شده که به عبارتی از two data shards and two parity shards استفاده شده است
 - از هدر استفاده نکنید چون شاید مشکل دار شوید. در هر صورت برای گیم به هدر نیازی ندارم. بعدا به این پروژه xray core را در صورت امکان اضافه میکنم .
 - اگر با ایپی 4 جواب نگرفتید ، با ایپی 6 native یا لوکال تست نمایید. من خودم شخصا با همشون جواب گرفتم
-- این پورت فوروارد با لوکال و ipsec استفاده خواهد شد(برای امنیت بیشتر) و‌فعلا این پروژه در حالت on hold خواهد بود تا نخست پنج سرور ایران و 10 سرور خارج را کامل کنم و سپس رادار‌ برای اسکریپت 6to4.( کم کم اپدیت میشود)
+- این پورت فوروارد با لوکال و ipsec استفاده خواهد شد(برای امنیت بیشتر)
 - این پورت فوروارد بعدا با تانل داخلی هم ترکیب خواهد شد
 - به این برنامه tcp no delay هم برای پینگ بهتر اضافه شد. بافر سایز هم توسط کامند لاین، قابل تغییر میباشد و همچنین از تعداد goroutines 100 برای performance استفاده میکند
 - بعدا این پروژه اپدیت خواهد شد و برای ترکیب با پروژه های دیگر،‌ feature های جدید در صورت نیاز اضافه خواهد شد.
 - اگر‌ از این پروژه استفاده کردید و مشکلی دیدید میتوانید در قسمت issues یا ایمیل به اطلاع من برسانید
-- مرسی از engboy که در تست به من کمک بسیاری کردند(به عنوان Contributor نامشون اورده شده است)
-.
+
+
+  </details>
+</div>
+
+**مرسی از engboy که در تست به من کمک بسیاری کردند(به عنوان Contributor نامشون اورده شده است)**
+
+---------------------
+<div align="right">
+  <details>
+    <summary><strong>چندین نکته</strong></summary>
+    
+  ------------------------------------ 
+
+- اگر به هر دلیلی udp در سرور شما لیمیت بود، از geneve و ایپی 4 یا ایپی 6 استفاده نمایید.
+- اگر باز هم لیمیت سرور ایران شما زیاد بود ، به صورت kcp و tcp برای گیم استفاده نمایید.
+- برای tcp نیازی به نصب هیچ پروگرامی ندارید و فقط udp از پایه سوکت استفاده میکند.
+
+  </details>
+</div>
+
+------------------------------------ 
+  ![6348248](https://github.com/Azumi67/PrivateIP-Tunnel/assets/119934376/398f8b07-65be-472e-9821-631f7b70f783)
+**روش اجرا**
+-
+
+ <div align="right">
+  <details>
+    <summary><strong><img src="https://github.com/Azumi67/Rathole_reverseTunnel/assets/119934376/fcbbdc62-2de5-48aa-bbdd-e323e96a62b5" alt="Image"> </strong>برای سیستم عامل ubuntu 22 به بالا و debian 12</summary>
+  
+------------------------------------ 
 
  **برای استفاده از گو، پکیج گو را اول نصب کنید.(میتونید از اسکریپت پروژه های گو من برای نصب استفاده نمایید)**
 
-**برای سیستم عامل های جدید [Ubuntu 22+ or Debian12] میتوانید از binary استفاده نمایید( به زودی اسکریپتش را در وقت آزاد میسازم که نصبش اسان باشد
-)**
 
   ```
   apt update -y
@@ -45,24 +95,30 @@ Hello Azumi Desu !!
   
   ```
   - برای مولتی باید چندین سرویس با همین دستورات بسازید
-  
-  **برای سیستم عامل های قدیمی مثل ubuntu 20 و debian 10/11 از روش زیر باید نصب کنید**
-- install go package
-- run : sudo apt-get install git-all
-- download: git clone https://github.com/Azumi67/PortforwardSec
-- Go to dir : cd PortforwardSec
-- go clean -modcache
-- go mod tidy
-- go get github.com/Azumi67/PortforwardSec/tcp
-- go get github.com/Azumi67/PortforwardSec/nodelay
-- go get github.com/Azumi67/PortforwardSec/udp4
-- go get github.com/Azumi67/PortforwardSec/udp6
-- go get github.com/klauspost/reedsolomon
-- go run azumi4.go --install or go run azumi6.go --install [For UDP only]
-- Now run With Go [TCP] : go run azumi.go ip-iran port-iran ip-kharej port-kharej tcp
-- Now run With Go [TCP & No delay] : go run azuminodelay.go ip-iran port-iran ip-kharej port-kharej tcp true/false buffersize
-- Now run With Go [UDP4] : go run azumi4.go --iranPort portiran --remoteIP ipkharej --remotePort portkharej --bufferSize 65507
-- Now run With Go [UDP6] : go run azumi6.go --iranPort portiran --remoteIP ipkharej --remotePort portkharej --bufferSize 65507
+
+    </details>
+</div>
+ <div align="right">
+  <details>
+    <summary><strong><img src="https://github.com/Azumi67/Rathole_reverseTunnel/assets/119934376/fcbbdc62-2de5-48aa-bbdd-e323e96a62b5" alt="Image"> </strong>برای سیستم عامل ubuntu 20 , debian 10/11</summary>
+
+```
+install go package
+sudo apt-get install git-all
+git clone https://github.com/Azumi67/PortforwardSec
+cd PortforwardSec
+go clean -modcache
+go mod tidy
+go get github.com/Azumi67/PortforwardSec/tcp
+go get github.com/Azumi67/PortforwardSec/nodelay
+go get github.com/Azumi67/PortforwardSec/udp4
+go get github.com/Azumi67/PortforwardSec/udp6
+go get github.com/klauspost/reedsolomon
+go run azumi4.go --install or go run azumi6.go --install [For UDP only]
+[TCP] : go run azumi.go ip-iran port-iran ip-kharej port-kharej tcp
+[TCP & No delay] : go run azuminodelay.go ip-iran port-iran ip-kharej port-kharej tcp true/false buffersize
+[UDP4] : go run azumi4.go --iranPort portiran --remoteIP ipkharej --remotePort portkharej --bufferSize 65507
+[UDP6] : go run azumi6.go --iranPort portiran --remoteIP ipkharej --remotePort portkharej --bufferSize 65507
 
 =======
 
@@ -91,9 +147,9 @@ UDP Example
 example IPV4 : go run azumi4.go --iranPort 5051 --remoteIP 200.100.20.100 --remotePort 5051 --bufferSize 65507
 
 example IPV6 : go run azumi6.go --iranPort 5051 --remoteIP 2002::db8:1 --remotePort 5051 --bufferSize 65507
+```
 - برای مولتی پورت باید سرویس جداگانه برای هر پورت بسازید ( اگر نیاز به آموزش داشتید داخل issue بگید)
-  
-**چند نکته**
-- اگر به هر دلیلی udp در سرور شما لیمیت بود، از geneve و ایپی 4 یا ایپی 6 استفاده نمایید.
-- اگر باز هم لیمیت سرور ایران شما زیاد بود ، به صورت kcp و tcp برای گیم استفاده نمایید.
-- برای tcp نیازی به نصب هیچ پروگرامی ندارید و فقط udp از پایه سوکت استفاده میکند.
+
+  </details>
+</div>
+
