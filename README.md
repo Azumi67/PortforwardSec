@@ -30,6 +30,7 @@ Hello Azumi Desu !!
 
 **برای سیستم عامل های جدید میتوانید از binary استفاده نمایید( به زودی اسکریپتش را در وقت آزاد میسازم که نصبش اسان باشد
 )**
+
   ```
   apt update -y
   apt install wget -y
@@ -42,7 +43,7 @@ Hello Azumi Desu !!
   for udp ipv4 : ./azumi4 --iranPort 5051 --remoteIP kharejipv4 --remotePort 5051 --bufferSize 65507
   for udp ipv6 : /azumi6 --iranPort 5051 --remoteIP kharejipv6 --remotePort 5051 --bufferSize 65507
   
-    ```
+  ```
   - برای مولتی باید چندین سرویس با همین دستورات بسازید
   
   **برای سیستم عامل های قدیمی مثل ubuntu 20 و debian 10/11 از روش زیر باید نصب کنید**
