@@ -2,41 +2,40 @@ package main
 
 import (
 	"flag"
+	"fmt"
 	"log"
+	"os"
+	"strconv"
 
-	"github.com/Azumi67/PortforwardSec/udp.lite"
-	"github.com/klauspost/reedsolomon"
+	"github.com/Azumi67/PortforwardSec/test"
 )
 
 func main() {
-	install := flag.Bool("install", false, "Install socat")
-	var iranPort, remoteIP, remotePort, command string
-	var bufferSize int
-
-	flag.StringVar(&iranPort, "iranPort", "", "Iran port")
-	flag.StringVar(&remoteIP, "remoteIP", "", "Remote IP")
-	flag.StringVar(&remotePort, "remotePort", "", "Remote port")
-	flag.StringVar(&command, "command", "", "Custom command to use instead of socat")
-	flag.IntVar(&bufferSize, "bufferSize", 0, "Buffer size in bytes")
-
-	flag.Parse()
-
-	if *install {
-		err := udplite.installSct()
-		if err != nil {
-			log.Fatal(err)
-		}
-	}
-
-	if iranPort == "" || remoteIP == "" || remotePort == "" {
-		log.Fatal("Plz provide correct inputs for iranPort, remoteKharej, and remotePort")
-	}
-
-	enc, err := reedsolomon.New(2, 2)
-	if err != nil {
-		log.Println("Error creating ReedSolomon encoder:", err)
+	if len(os.Args) != 8 {
+		fmt.Printf("Usage: %s iranIP iranPort remoteIP remotePort protocol [tcpnodelay] true or false buffersize\n", os.Args[0])
 		return
 	}
 
-	udplite.PortFwdUDP(iranPort, remoteIP, remotePort, command, bufferSize, enc)
+	iranIP := os.Args[1]
+	localPort := os.Args[2]
+	remoteIP := os.Args[3]
+	remotePort := os.Args[4]
+	protocol := os.Args[5]
+	noNagle, err := strconv.ParseBool(os.Args[6])
+	if err != nil {
+		fmt.Println("Invalid input for tcpnodelay. Enter true or false.")
+		return
+	}
+	bufferSize, err := strconv.Atoi(os.Args[7])
+	if err != nil {
+		fmt.Println("Invalid input for buffersize. example: 65535.")
+		return
+	}
+
+	switch protocol {
+	case "tcp":
+		test.PortForwardTCP(iranIP, localPort, remoteIP, remotePort, noNagle, bufferSize)
+	default:
+		fmt.Println("Invalid protocol. Supported protocols are tcp and udp. More methods coming!")
+	}
 }
