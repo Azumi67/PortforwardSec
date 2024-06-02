@@ -27,6 +27,25 @@ Hello Azumi Desu !!
 .
 
  **برای استفاده از گو، پکیج گو را اول نصب کنید.(میتونید از اسکریپت پروژه های گو من برای نصب استفاده نمایید)**
+
+**برای سیستم عامل های جدید میتوانید از binary استفاده نمایید**
+- به زودی اسکریپتش را در وقت آزاد میسازم که نصبش اسان باشد
+  ```
+  apt update -y
+  apt install wget -y
+  apt install unzip -y
+  wget https://github.com/Azumi67/PortforwardSec/releases/download/v1.0.1/azumi.zip
+  unzip azumi.zip -d /root/portforward
+  cd portforward
+  for tcp ipv4 : ./azuminodelay iranip 5051 kharejip 5051 tcp true 65535
+  for tcp ipv6 : ./azuminodelay :: 5051 kharejipv6 5051 tcp true 65535
+  for udp ipv4 : ./azumi4 --iranPort 5051 --remoteIP kharejipv4 --remotePort 5051 --bufferSize 65507
+  for udp ipv6 : /azumi6 --iranPort 5051 --remoteIP kharejipv6 --remotePort 5051 --bufferSize 65507
+  
+    ```
+  - برای مولتی باید چندین سرویس با همین دستورات بسازید
+  
+  **برای سیستم عامل های قدیمی مثل ubuntu 20 و debian 10/11 از روش زیر باید نصب کنید**
 - install go package
 - run : sudo apt-get install git-all
 - download: git clone https://github.com/Azumi67/PortforwardSec
