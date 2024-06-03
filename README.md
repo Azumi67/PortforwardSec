@@ -105,6 +105,32 @@ Hello Azumi Desu !!
  <div align="right">
   - برای مولتی باید چندین سرویس با همین دستورات بسازید
 
+  **نحوه ساختن سرویس**
+ <div align="left">
+   
+```
+nano /etc/systemd/system/azumi.service
+## put this config inside [ This is a sample]##
+
+[Unit]
+Description=Azumi Service
+After=network.target
+
+[Service]
+Type=simple
+Restart=always    
+RestartSec=5s
+LimitNOFILE=1048576
+ExecStart=/root/portforward/azumi4 --iranPort 1180 --remoteIP 80.200.1.1 --remotePort 1180 --bufferSize 65507
+
+[Install]
+WantedBy=multi-user.target
+##### do not copy this ###
+chmod u+x /etc/systemd/system/azumi.service
+systemctl enable /etc/systemd/system/azumi.service
+systemctl start azumi.service
+ ```
+
   </details>
 </div>
  <div align="right">
@@ -160,7 +186,34 @@ example IPV4 : go run azumi4.go --iranPort 5051 --remoteIP 200.100.20.100 --remo
 example IPV6 : go run azumi6.go --iranPort 5051 --remoteIP 2002::db8:1 --remotePort 5051 --bufferSize 65507
 ```
  <div align="right">
-- برای مولتی پورت باید سرویس جداگانه برای هر پورت بسازید ( اگر نیاز به آموزش داشتید داخل issue بگید)
+- برای مولتی پورت باید سرویس جداگانه برای هر پورت بسازید 
+
+
+  **نحوه ساختن سرویس**
+ <div align="left">
+   
+```
+nano /etc/systemd/system/azumi.service
+## put this config inside [ This is a sample]##
+
+[Unit]
+Description=Azumi Service
+After=network.target
+
+[Service]
+Type=simple
+Restart=always    
+RestartSec=5s
+LimitNOFILE=1048576
+ExecStart=/root/PortforwardSec/azumi4.go --iranPort 1180 --remoteIP 80.200.1.1 --remotePort 1180 --bufferSize 65507
+
+[Install]
+WantedBy=multi-user.target
+##### do not copy this ###
+chmod u+x /etc/systemd/system/azumi.service
+systemctl enable /etc/systemd/system/azumi.service
+systemctl start azumi.service
+ ```
 
   </details>
 </div>
