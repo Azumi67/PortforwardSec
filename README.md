@@ -94,6 +94,7 @@ Hello Azumi Desu !!
   chmod +x azuminodelay
   chmod +x azumi4
   chmod +x azumi6
+  ./azumi6 --install
   for tcp ipv4 : ./azuminodelay iranip 5051 kharejip 5051 tcp true 65535
   for tcp ipv6 : ./azuminodelay :: 5051 kharejipv6 5051 tcp true 65535
   for udp ipv4 : ./azumi4 --iranPort 5051 --remoteIP kharejipv4 --remotePort 5051 --bufferSize 65507
